@@ -1,6 +1,3 @@
-using Claims.Domain.Data;
-using Claims.Api.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClaimsSystem
 {
@@ -11,7 +8,9 @@ namespace ClaimsSystem
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
             builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<IClaimMessagePublisher, ServiceBusClaimPublisher>(); //Service bus

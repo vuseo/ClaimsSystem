@@ -28,7 +28,7 @@ namespace Claims.Api.Controllers
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetClaims()
-        {
+        { 
             var claims = await _db.Claims.Select(c => new ClaimResponseDto
             {
                 Id = c.Id,
