@@ -5,7 +5,12 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Claims.Api", "Claims.Api.csproj", "{DD1B3C6A-F67C-42CE-8B59-AAE8E691F8DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Claims.Domain", "..\Claims.Domain\Claims.Domain.csproj", "{D82059BE-B072-4B81-B49F-B358C9D06166}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Claims.Domain", "..\Claims.Domain\Claims.Domain.csproj", "{D82059BE-B072-4B81-B49F-B358C9D06166}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Claims.Worker", "..\Claims.Worker\Claims.Worker.csproj", "{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D82059BE-B072-4B81-B49F-B358C9D06166} = {D82059BE-B072-4B81-B49F-B358C9D06166}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{D82059BE-B072-4B81-B49F-B358C9D06166}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D82059BE-B072-4B81-B49F-B358C9D06166}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D82059BE-B072-4B81-B49F-B358C9D06166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

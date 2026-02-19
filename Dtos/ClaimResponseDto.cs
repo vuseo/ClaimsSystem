@@ -7,6 +7,7 @@
         /// </summary>
         public Guid Id { get; set; }
         public DateTime DateOfIncident { get; set; }
-        public string VehicleMakeAndModel { get; set; } = default!;
+        public string? VehicleMake { get; set; }
+        public string? VehicleModel { get; set; }
     }
 }
