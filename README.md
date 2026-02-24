@@ -18,6 +18,7 @@ Clean architecture using Domain, Infrastructure, API, and Worker separation
 
 Easily extendable for production environments
 
+
 Architecture
 Current Local Setup
 Client
@@ -34,7 +35,8 @@ Claims are submitted via the API
 
 API publishes messages to a Service Bus queue
 
-Worker listens to the queue, processes claims, and stores them in a local SQL database
+The worker listens to the queue, processes claims, and stores them in a local SQL database
+
 
 Production-Ready Architecture
 Client
