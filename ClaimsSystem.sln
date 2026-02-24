@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Claims.Worker", "..\Claims.
 		{D82059BE-B072-4B81-B49F-B358C9D06166} = {D82059BE-B072-4B81-B49F-B358C9D06166}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{2EEAC37E-4993-4978-836E-13E18D45DF24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1479B306-B9D3-4FD1-BC1A-4DAD5DC687CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EEAC37E-4993-4978-836E-13E18D45DF24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EEAC37E-4993-4978-836E-13E18D45DF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EEAC37E-4993-4978-836E-13E18D45DF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EEAC37E-4993-4978-836E-13E18D45DF24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

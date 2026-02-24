@@ -1,6 +1,9 @@
-using Claims.Domain.Data;
-using Claims.Api.Services;
+using Infrastructure.Repositories;
+using Claims.Domain;
+using Claims.Domain.Messages;
 using Microsoft.EntityFrameworkCore;
+using Claims.Domain.Interfaces;
+using Infrastructure;
 
 namespace ClaimsSystem
 {
@@ -14,6 +17,8 @@ namespace ClaimsSystem
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddControllers();
+            builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddSingleton<IClaimMessagePublisher, ServiceBusClaimPublisher>(); //Service bus
             builder.Services.AddDbContext<ClaimsDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ClaimsDatabase"), 
                 sqlOptions => {sqlOptions.MigrationsAssembly("Claims.Api");})); //SQL Db service bus / migrations

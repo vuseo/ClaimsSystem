@@ -1,10 +1,10 @@
 ﻿using Claims.Api.Dtos;
-using Claims.Api.Services;
-using Claims.Domain.Data;
+using Claims.Domain;
 using Claims.Domain.Entities;
+using Claims.Domain.Interfaces;
 using Claims.Domain.Messages;
+using Claims.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Claims.Api.Controllers
 {
@@ -12,62 +12,55 @@ namespace Claims.Api.Controllers
     [ApiController]
     public class ClaimsController : ControllerBase
     {
-        private readonly ClaimsDbContext _db;
+        private readonly IClaimRepository _repository;
         private readonly IClaimMessagePublisher _publisher;
 
-        public ClaimsController(ClaimsDbContext db, IClaimMessagePublisher publisher)
+        public ClaimsController(IClaimRepository repository, IClaimMessagePublisher publisher)
         {
-            _db = db;
+            _repository = repository;
             _publisher = publisher;
         }
 
-        /// <summary>
-        /// returns a list of claims with basic information (ID, date of incident, vehicle make/model).
-        /// There is no sensitive information (like customer phone number or social security number) included in the response, 
-        /// as this endpoint is intended for general listing purposes.
-        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetClaims()
-        { 
-            var claims = await _db.Claims.Select(c => new ClaimResponseDto
+        {
+            var claims = await _repository.GetAllAsync();
+
+            var response = claims.Select(c => new ClaimResponseDto
             {
                 Id = c.Id,
-                DateOfIncident = c.DateOfIncident,
-                VehicleMake = c.VehicleMake,
-                VehicleModel = c.VehicleModel
-            }).ToListAsync();
+                DateOfIncident = c.DateOfIncident.Value,
+                VehicleMake = c.Vehicle.Make,
+                VehicleModel = c.Vehicle.Model
+                // intentionally excluding sensitive fields
+            });
 
-            return Ok(claims);
+            return Ok(response);
         }
 
-        /// <summary>
-        /// accepts a claim submission, creates a new claim in the database, and then publishes a ClaimSubmittedMessage.
-        /// </summary>
         [HttpPost]
         public async Task<IActionResult> SubmitClaim([FromBody] CreateClaimRequestDto request)
         {
-            // Create domain entity (ID is generated inside Claim)
+            // Create domain entity with value objects (validations happen inside VOs)
             var claim = new Claim(
-                request.CustomerPhoneNumber,
-                request.CustomerSocialSecurityNumber,
-                request.DateOfIncident,
-                request.VehicleMake,
-                request.VehicleModel);
+                new PhoneNumber(request.CustomerPhoneNumber),
+                new SocialSecurityNumber(request.CustomerSocialSecurityNumber),
+                new IncidentDate(request.DateOfIncident),
+                new Vehicle(request.VehicleMake, request.VehicleModel)
+            );
 
-            // For Future: use a transactional outbox or messaging pattern to ensure individual units between database and message broker operations.
-            // Along with dead-letter queue and retry policies to handle failures in message publishing without losing data integrity.
-            _db.Claims.Add(claim);
-            await _db.SaveChangesAsync();
+            // Persist claim using repository
+            await _repository.AddAsync(claim);
 
             // Publish integration event AFTER persistence
             var message = new ClaimSubmittedMessage
             {
                 ClaimId = claim.Id,
-                CustomerPhoneNumber = claim.CustomerPhoneNumber,
-                CustomerSocialSecurityNumber = claim.CustomerSocialSecurityNumber,
-                DateOfIncident = claim.DateOfIncident,
-                VehicleMake = claim.VehicleMake,
-                VehicleModel = claim.VehicleModel,
+                CustomerPhoneNumber = claim.CustomerPhoneNumber.Value,
+                CustomerSocialSecurityNumber = claim.CustomerSocialSecurityNumber.Value,
+                DateOfIncident = claim.DateOfIncident.Value,
+                VehicleMake = claim.Vehicle.Make,
+                VehicleModel = claim.Vehicle.Model,
                 SubmittedAt = DateTime.UtcNow
             };
 
