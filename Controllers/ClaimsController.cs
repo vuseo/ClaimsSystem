@@ -28,13 +28,30 @@ namespace Claims.Api.Controllers
 
             var response = claims.Select(c => new ClaimResponseDto
             {
+                // intentionally excluding sensitive fields
                 Id = c.Id,
                 DateOfIncident = c.DateOfIncident.Value,
                 VehicleMake = c.Vehicle.Make,
                 VehicleModel = c.Vehicle.Model
-                // intentionally excluding sensitive fields
             });
 
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetClaimById(Guid id)
+        {
+            var claim = await _repository.GetByIdAsync(id);
+            if (claim == null)
+                return NotFound();
+            var response = new ClaimResponseDto
+            {
+                // intentionally excluding sensitive fields
+                Id = claim.Id,
+                DateOfIncident = claim.DateOfIncident.Value,
+                VehicleMake = claim.Vehicle.Make,
+                VehicleModel = claim.Vehicle.Model
+            };
             return Ok(response);
         }
 
@@ -67,6 +84,21 @@ namespace Claims.Api.Controllers
             await _publisher.PublishClaimAsync(message);
 
             return Accepted(new { claim.Id });
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteAllClaims()
+        {
+            // For demonstration purposes only. In production, this would be a dangerous operation.
+            // Implementing a bulk delete method in the repository would be more efficient than deleting one by one.
+            return StatusCode(501, "Bulk delete is not implemented.");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteClaim(Guid id)
+        {
+            // For demonstration purposes only. In production, you would implement a delete method in the repository.
+            return StatusCode(501, "Delete by ID is not implemented.");
         }
     }
 }
