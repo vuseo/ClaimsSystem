@@ -6,6 +6,13 @@ Swagger UI is included for easy API testing and interaction, and the system is d
 
 ---
 
+## Prerequisites
+- .NET 8 SDK
+- SQL Server or LocalDB
+- Azure subscription for Service Bus and SQL Database
+
+---
+
 ## Features
 
 - Submit new insurance claims (with validation for phone numbers and social security numbers)
